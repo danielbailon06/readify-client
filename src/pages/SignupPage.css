@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+.signup-page {
+  min-height: 100vh;
+  background-color: #f6f4f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.signup-shell {
+  width: 100%;
+  max-width: 1300px;
+  background-color: #f9f7f4;
+  border-radius: 28px;
+  padding: 40px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.signup-left {
+  flex: 1.05;
+  position: relative;
+  height: 680px;
+  max-height: 78vh;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.signup-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.72);
+}
+
+.signup-image-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 34px 34px 30px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.38) 35%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  color: white;
+}
+
+.signup-image-overlay h2 {
+  margin: 0 0 12px;
+  font-family: 'Noto Serif', serif;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.signup-image-overlay p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  max-width: 420px;
+}
+
+.signup-right {
+  flex: 0.95;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 520px;
+  background-color: #ffffff;
+  border-radius: 28px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.signup-brand {
+  font-family: 'Noto Serif', serif;
+  color: #c96f3d;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.signup-card h1 {
+  margin: 0 0 10px;
+  font-family: 'Noto Serif', serif;
+  font-size: 3rem;
+  line-height: 1.1;
+  color: #1f1f1f;
+}
+
+.signup-subtitle {
+  margin-bottom: 28px;
+  color: #6f6862;
+  font-size: 1rem;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.form-group label {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: #8f857c;
+}
+
+.form-group input {
+  width: 100%;
+  height: 52px;
+  border-radius: 999px;
+  border: none;
+  background-color: #f0ebe6;
+  padding: 0 18px;
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+  color: #b7afa7;
+}
+
+.password-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.password-row .form-group {
+  flex: 1;
+}
+
+.signup-submit-btn {
+  margin-top: 10px;
+  height: 54px;
+  border-radius: 999px;
+  border: none;
+  background-color: #c96f3d;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.signup-submit-btn:hover {
+  background-color: #b86133;
+}
+
+.signup-login-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #7a726b;
+}
+
+.signup-login-text a {
+  color: #c96f3d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-login-text a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #b23b3b;
+  font-size: 0.85rem;
+  margin-top: -4px;
+}
+
+@media (max-width: 1000px) {
+  .signup-shell {
+    flex-direction: column;
+  }
+
+  .signup-left {
+    height: 400px;
+  }
+
+  .password-row {
+    flex-direction: column;
+  }
+}
