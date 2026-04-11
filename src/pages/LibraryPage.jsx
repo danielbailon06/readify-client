@@ -1,0 +1,149 @@
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/auth.context";
+import "./LibraryPage.css";
+
+function LibraryPage() {
+  const { user } = useContext(AuthContext);
+
+  const [libraryUser, setLibraryUser] = useState(null);
+  const [allBooks, setAllBooks] = useState([]);
+  const [activeTab, setActiveTab] = useState("currentlyReading");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user?._id) return;
+
+    Promise.all([
+      axios.get(`http://localhost:5005/api/users/${user._id}`),
+      axios.get("http://localhost:5005/api/books"),
+    ])
+      .then(([userResponse, booksResponse]) => {
+        setLibraryUser(userResponse.data);
+        setAllBooks(booksResponse.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error al cargar la biblioteca:", error);
+        setIsLoading(false);
+      });
+  }, [user]);
+
+  if (isLoading) {
+    return <p>Cargando biblioteca...</p>;
+  }
+
+  if (!libraryUser) {
+    return <p>No se pudo cargar la biblioteca.</p>;
+  }
+
+  const booksToShow = libraryUser[activeTab] || [];
+  const randomBooks = [...allBooks].sort(() => Math.random() - 0.5);
+
+  return (
+    <div className="library-page">
+      <div className="library-top">
+        <div className="library-hero">
+          <h1>Tu pequeño refugio</h1>
+          <p>
+            Un rincón de calma, lleno de historias que abrazan como un hogar.
+          </p>
+        </div>
+      </div>
+
+      <div className="library-tabs">
+        <button
+          className={activeTab === "currentlyReading" ? "tab-button active" : "tab-button"}
+          onClick={() => setActiveTab("currentlyReading")}
+        >
+          Leyendo
+        </button>
+
+        <button
+          className={activeTab === "wantToRead" ? "tab-button active" : "tab-button"}
+          onClick={() => setActiveTab("wantToRead")}
+        >
+          Pendientes
+        </button>
+
+        <button
+          className={activeTab === "read" ? "tab-button active" : "tab-button"}
+          onClick={() => setActiveTab("read")}
+        >
+          Leídos
+        </button>
+      </div>
+
+      <div className="library-section-header">
+        <h2>
+          {activeTab === "currentlyReading" && "Acompañándome ahora..."}
+          {activeTab === "wantToRead" && "A la espera de ser descubiertos."}
+          {activeTab === "read" && "Historias que ya forman parte de ti."}
+        </h2>
+      </div>
+
+      {booksToShow.length === 0 ? (
+        <p className="library-empty">Este espacio espera su primera historia contigo.</p>
+      ) : (
+        <div className="library-grid">
+          {booksToShow.map((book, index) => {
+            const progress =
+              activeTab === "wantToRead"
+                ? 0
+                : activeTab === "read"
+                ? 100
+                : 25 + (index % 4) * 15;
+
+            return (
+              <div key={book._id} className="library-card">
+                <div className="library-card-image">
+                  <img src={book.coverImage} alt={book.title} />
+                </div>
+
+                <div className="library-card-body">
+                  <div className="library-card-title-row">
+                    <h3>{book.title}</h3>
+                  </div>
+
+                  <p>{book.author}</p>
+
+                  <div className="library-progress">
+                    <div className="library-progress-label-row">
+                      <span className="library-progress-label">PROGRESO</span>
+                      <span className="library-progress-value">{progress}%</span>
+                    </div>
+
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {randomBooks.length > 0 && (
+        <div className="horizon-section">
+          <h2>En el horizonte</h2>
+
+          <div className="horizon-wrapper">
+            <div className="horizon-row">
+              {randomBooks.map((book) => (
+                <div key={book._id} className="horizon-book">
+                  <img src={book.coverImage} alt={book.title} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default LibraryPage;

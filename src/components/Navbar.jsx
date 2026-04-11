@@ -28,7 +28,7 @@ function Navbar() {
             </NavLink>
 
             <NavLink
-              to="/shelves"
+              to="/library"
               className={({ isActive }) =>
                 isActive ? "nav-link_logged active" : "nav-link_logged"
               }

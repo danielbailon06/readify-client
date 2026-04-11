@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import BookPage from "./pages/BookPage";
-import ShelvesPage from "./pages/ShelvesPage";
+import LibraryPage from "./pages/LibraryPage";
 import ShelfDetailsPage from "./pages/ShelfDetailsPage";
 
 function App() {
@@ -45,10 +45,10 @@ function App() {
         />
 
         <Route
-          path="/shelves"
+          path="/library"
           element={
             <PrivateRoute>
-              <ShelvesPage />
+              <LibraryPage />
             </PrivateRoute>
           }
         />
