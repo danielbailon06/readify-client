@@ -1,10 +1,22 @@
-import { useContext } from "react";
-import { NavLink, Link } from "react-router-dom"; // 👈 ambos
+import { useContext, useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import "./Navbar.css";
 
 function Navbar() {
   const { isLoggedIn, logOutUser } = useContext(AuthContext);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    const trimmedSearch = search.trim();
+    if (!trimmedSearch) return;
+
+    navigate(`/books?search=${encodeURIComponent(trimmedSearch)}`);
+    setSearch("");
+  };
 
   return (
     <nav className="navbar">
@@ -13,6 +25,18 @@ function Navbar() {
           Readify
         </NavLink>
       </div>
+
+      {isLoggedIn && (
+        <form className="navbar-search" onSubmit={handleSearchSubmit}>
+          <span className="navbar-search-icon">⌕</span>
+          <input
+            type="text"
+            placeholder="Busca un libro, autor o género..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </form>
+      )}
 
       <div className="navbar-right">
         {isLoggedIn ? (

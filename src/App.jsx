@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import BookPage from "./pages/BookPage";
+import BookDetailsPage from "./pages/BookDetailsPage";
 import LibraryPage from "./pages/LibraryPage";
 import ShelfDetailsPage from "./pages/ShelfDetailsPage";
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/books" element={<BookPage />} />
+        <Route path="/books/:bookId" element={<BookDetailsPage />} />
 
         <Route
           path="/profile"

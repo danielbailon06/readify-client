@@ -1,0 +1,206 @@
+.book-details-page {
+  min-height: 100vh;
+  padding: 50px 60px;
+}
+
+.book-details-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 90px;
+  align-items: start;
+}
+
+.book-details-left {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.book-cover-card {
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  background: #d9c9bc;
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
+}
+
+.book-cover-card img {
+  width: 68%;
+  height: 72%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.book-action-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.book-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.book-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.book-btn-primary {
+  background-color: #b9643c;
+  color: white;
+}
+
+.book-btn-secondary {
+  background-color: #cfe2c8;
+  color: #3d563f;
+}
+
+.book-meta-top {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #b9643c;
+  letter-spacing: 0.02em;
+  margin: 6px 0 20px;
+}
+
+.book-title {
+  font-family: "Noto Serif", serif;
+  font-size: 4rem;
+  line-height: 0.98;
+  color: #1f1f1d;
+  margin: 0 0 18px;
+}
+
+.book-author {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.1rem;
+  color: #7d8873;
+  font-style: italic;
+  margin: 0 0 34px;
+}
+
+.book-author span {
+  font-weight: 500;
+}
+
+.book-progress-card {
+  background: #f1efea;
+  border-radius: 28px;
+  padding: 22px 24px;
+  margin-bottom: 34px;
+}
+
+.book-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4f504b;
+  margin-bottom: 14px;
+}
+
+.book-progress-bar {
+  width: 100%;
+  height: 14px;
+  background: #cfe2c8;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.book-progress-fill {
+  height: 100%;
+  background: #5f775d;
+  border-radius: 999px;
+}
+
+.book-progress-quote {
+  margin-top: 12px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.98rem;
+  color: #7d8873;
+  font-style: italic;
+}
+
+.book-synopsis h2 {
+  font-family: "Noto Serif", serif;
+  font-size: 2rem;
+  color: #2e2d2a;
+  margin: 0 0 16px;
+}
+
+.book-synopsis p {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #625d58;
+  max-width: 800px;
+}
+
+.book-tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+
+.book-tag {
+  background-color: #cfe2c8;
+  color: #4c624a;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+  .book-details-layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .book-title {
+    font-size: 3rem;
+  }
+
+  .book-cover-card {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 700px) {
+  .book-details-page {
+    padding: 32px 24px;
+  }
+
+  .book-title {
+    font-size: 2.4rem;
+  }
+
+  .book-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .book-action-buttons {
+    flex-direction: column;
+  }
+}

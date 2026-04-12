@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
 import "./LibraryPage.css";
+import { Link } from "react-router-dom";
 
 function LibraryPage() {
   const { user } = useContext(AuthContext);
@@ -95,33 +96,39 @@ function LibraryPage() {
                 : 25 + (index % 4) * 15;
 
             return (
-              <div key={book._id} className="library-card">
-                <div className="library-card-image">
-                  <img src={book.coverImage} alt={book.title} />
-                </div>
-
-                <div className="library-card-body">
-                  <div className="library-card-title-row">
-                    <h3>{book.title}</h3>
+              <Link
+                to={`/books/${book._id}`}
+                key={book._id}
+                className="library-card-link"
+              >
+                <div className="library-card">
+                  <div className="library-card-image">
+                    <img src={book.coverImage} alt={book.title} />
                   </div>
 
-                  <p>{book.author}</p>
-
-                  <div className="library-progress">
-                    <div className="library-progress-label-row">
-                      <span className="library-progress-label">PROGRESO</span>
-                      <span className="library-progress-value">{progress}%</span>
+                  <div className="library-card-body">
+                    <div className="library-card-title-row">
+                      <h3>{book.title}</h3>
                     </div>
 
-                    <div className="progress-bar">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${progress}%` }}
-                      />
+                    <p>{book.author}</p>
+
+                    <div className="library-progress">
+                      <div className="library-progress-label-row">
+                        <span className="library-progress-label">PROGRESO</span>
+                        <span className="library-progress-value">{progress}%</span>
+                      </div>
+
+                      <div className="progress-bar">
+                        <div
+                          className="progress-fill"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
@@ -134,9 +141,15 @@ function LibraryPage() {
           <div className="horizon-wrapper">
             <div className="horizon-row">
               {randomBooks.map((book) => (
-                <div key={book._id} className="horizon-book">
-                  <img src={book.coverImage} alt={book.title} />
-                </div>
+                <Link
+                  to={`/books/${book._id}`}
+                  key={book._id}
+                  className="horizon-book-link"
+                >
+                  <div className="horizon-book">
+                    <img src={book.coverImage} alt={book.title} />
+                  </div>
+                </Link>
               ))}
             </div>
           </div>

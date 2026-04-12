@@ -44,7 +44,9 @@ function BookPage() {
       {search && <p>Resultados para: "{search}"</p>}
 
       {filteredBooks.length === 0 ? (
-        <p>No se encontraron libros.</p>
+        <p>Aún no hay libros por aquí… pero eso solo significa que hay espacio para nuevas historias ✨
+          Si echas alguno en falta, cuéntanoslo en readify@support.com
+          y lo añadiremos con cariño 💌</p>
       ) : (
         filteredBooks.map((book) => (
           <div

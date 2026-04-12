@@ -89,3 +89,37 @@
   background-color: #b9643c;
   border-radius: 2px;
 }
+
+.navbar-search {
+  flex: 1;
+  max-width: 420px;
+  margin: 0 32px;
+  background-color: #f4efe8;
+  border: 1px solid #ebe3d8;
+  border-radius: 999px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.navbar-search-icon {
+  color: #c06b43;
+  font-size: 1rem;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.navbar-search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.95rem;
+  color: #5f5751;
+}
+
+.navbar-search input::placeholder {
+  color: #9a8f84;
+}
