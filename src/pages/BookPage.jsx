@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import "./BookPage.css";
 
 function BookPage() {
   const [books, setBooks] = useState([]);
@@ -38,33 +40,55 @@ function BookPage() {
   }
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Libros</h1>
+    <div className="book-page">
+      <h1>{search || "Libros"}</h1>
 
-      {search && <p>Resultados para: "{search}"</p>}
-
-      {filteredBooks.length === 0 ? (
-        <p>Aún no hay libros por aquí… pero eso solo significa que hay espacio para nuevas historias ✨
-          Si echas alguno en falta, cuéntanoslo en readify@support.com
-          y lo añadiremos con cariño 💌</p>
-      ) : (
-        filteredBooks.map((book) => (
-          <div
-            key={book._id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "12px",
-              padding: "16px",
-              marginBottom: "16px",
-            }}
-          >
-            <h3>{book.title}</h3>
-            <p><strong>Autor:</strong> {book.author}</p>
-            <p><strong>Géneros:</strong> {book.genre.join(", ")}</p>
-            <p>{book.description}</p>
-          </div>
-        ))
+      {search && (
+        <p className="search-info">
+          Resultados para: "{search}"
+        </p>
       )}
+
+      <div className="book-list">
+        {filteredBooks.length === 0 ? (
+          <p className="empty-state">
+            Aún no hay libros por aquí… pero eso solo significa que hay espacio para nuevas historias ✨
+            <br />
+            Si echas alguno en falta, cuéntanoslo en readify@support.com 💌
+          </p>
+        ) : (
+          filteredBooks.map((book) => (
+            <Link to={`/books/${book._id}`} className="book-card">
+
+              <img
+                src={
+                  book.coverImage ||
+                  "https://via.placeholder.com/120x170?text=Book"
+                }
+                alt={book.title}
+                className="book-cover"
+              />
+
+              <div className="book-info">
+                <h3 className="book-title">{book.title}</h3>
+                <p className="book-author">{book.author}</p>
+
+                <p className="book-description">
+                  {book.description}
+                </p>
+
+                <div className="book-tags">
+                  {book.genre.map((g, i) => (
+                    <span key={i} className="book-tag">
+                      {g}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
     </div>
   );
 }

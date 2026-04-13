@@ -54,14 +54,18 @@ function LibraryPage() {
 
       <div className="library-tabs">
         <button
-          className={activeTab === "currentlyReading" ? "tab-button active" : "tab-button"}
+          className={
+            activeTab === "currentlyReading" ? "tab-button active" : "tab-button"
+          }
           onClick={() => setActiveTab("currentlyReading")}
         >
           Leyendo
         </button>
 
         <button
-          className={activeTab === "wantToRead" ? "tab-button active" : "tab-button"}
+          className={
+            activeTab === "wantToRead" ? "tab-button active" : "tab-button"
+          }
           onClick={() => setActiveTab("wantToRead")}
         >
           Pendientes
@@ -77,23 +81,29 @@ function LibraryPage() {
 
       <div className="library-section-header">
         <h2>
-          {activeTab === "currentlyReading" && "Acompañándome ahora..."}
+          {activeTab === "currentlyReading" && "Acompañándote ahora..."}
           {activeTab === "wantToRead" && "A la espera de ser descubiertos."}
           {activeTab === "read" && "Historias que ya forman parte de ti."}
         </h2>
       </div>
 
       {booksToShow.length === 0 ? (
-        <p className="library-empty">Este espacio espera su primera historia contigo.</p>
+        <p className="library-empty">
+          Este espacio espera su primera historia contigo.
+        </p>
       ) : (
         <div className="library-grid">
-          {booksToShow.map((book, index) => {
+          {booksToShow.map((book) => {
+            const currentPage = libraryUser.readingProgress?.[book._id] || 0;
+
             const progress =
               activeTab === "wantToRead"
                 ? 0
                 : activeTab === "read"
                 ? 100
-                : 25 + (index % 4) * 15;
+                : book.pages
+                ? Math.min(Math.round((currentPage / book.pages) * 100), 100)
+                : 0;
 
             return (
               <Link
@@ -103,7 +113,13 @@ function LibraryPage() {
               >
                 <div className="library-card">
                   <div className="library-card-image">
-                    <img src={book.coverImage} alt={book.title} />
+                    <img
+                      src={
+                        book.coverImage ||
+                        "https://via.placeholder.com/160x240?text=No+Cover"
+                      }
+                      alt={book.title}
+                    />
                   </div>
 
                   <div className="library-card-body">
@@ -113,10 +129,18 @@ function LibraryPage() {
 
                     <p>{book.author}</p>
 
+                    {activeTab === "currentlyReading" && (
+                      <p className="library-pages-text">
+                        Página {currentPage} de {book.pages}
+                      </p>
+                    )}
+
                     <div className="library-progress">
                       <div className="library-progress-label-row">
                         <span className="library-progress-label">PROGRESO</span>
-                        <span className="library-progress-value">{progress}%</span>
+                        <span className="library-progress-value">
+                          {progress}%
+                        </span>
                       </div>
 
                       <div className="progress-bar">
@@ -147,7 +171,13 @@ function LibraryPage() {
                   className="horizon-book-link"
                 >
                   <div className="horizon-book">
-                    <img src={book.coverImage} alt={book.title} />
+                    <img
+                      src={
+                        book.coverImage ||
+                        "https://via.placeholder.com/120x180?text=No+Cover"
+                      }
+                      alt={book.title}
+                    />
                   </div>
                 </Link>
               ))}

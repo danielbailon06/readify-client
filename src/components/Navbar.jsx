@@ -48,7 +48,7 @@ function Navbar() {
                 isActive ? "nav-link_logged active" : "nav-link_logged"
               }
             >
-              Home
+              Inicio
             </NavLink>
 
             <NavLink
@@ -57,7 +57,7 @@ function Navbar() {
                 isActive ? "nav-link_logged active" : "nav-link_logged"
               }
             >
-              Library
+              Libreria
             </NavLink>
 
             <NavLink
@@ -66,11 +66,11 @@ function Navbar() {
                 isActive ? "nav-link_logged active" : "nav-link_logged"
               }
             >
-              Profile
+              Perfil
             </NavLink>
 
             <button onClick={logOutUser} className="nav-button">
-              Logout
+              Cerrar sesión
             </button>
           </>
         ) : (

@@ -1,13 +1,25 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 import "./BookDetailsPage.css";
 
 function BookDetailsPage() {
   const { bookId } = useParams();
+  const { user, setUser } = useContext(AuthContext);
 
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [readingStatus, setReadingStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const storedToken = localStorage.getItem("authToken");
+
+  const authConfig = {
+    headers: {
+      Authorization: `Bearer ${storedToken}`,
+    },
+  };
 
   useEffect(() => {
     axios
@@ -22,6 +34,68 @@ function BookDetailsPage() {
       });
   }, [bookId]);
 
+  useEffect(() => {
+    if (!user || !bookId) return;
+
+    const isInWantToRead = user.wantToRead?.some((book) => book._id === bookId);
+    const isInCurrentlyReading = user.currentlyReading?.some(
+      (book) => book._id === bookId
+    );
+    const isInRead = user.read?.some((book) => book._id === bookId);
+
+    if (isInWantToRead) {
+      setReadingStatus("wantToRead");
+    } else if (isInCurrentlyReading) {
+      setReadingStatus("currentlyReading");
+    } else if (isInRead) {
+      setReadingStatus("read");
+    } else {
+      setReadingStatus("");
+    }
+
+    const savedProgress = user.readingProgress?.[bookId] || 0;
+    setCurrentPage(savedProgress);
+  }, [user, bookId]);
+
+  const handleReadingStatusChange = async (e) => {
+    const newStatus = e.target.value;
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5005/api/users/${user._id}/reading-status`,
+        {
+          bookId,
+          status: newStatus,
+        },
+        authConfig
+      );
+
+      setUser(response.data);
+      setReadingStatus(newStatus);
+    } catch (error) {
+      console.log("Error actualizando estado de lectura:", error);
+    }
+  };
+
+  const handleUpdateProgress = async () => {
+    try {
+      const safePage = Math.min(Number(currentPage), book.pages || 0);
+
+      const response = await axios.put(
+        `http://localhost:5005/api/users/${user._id}/progress/${bookId}`,
+        {
+          currentPage: safePage,
+        },
+        authConfig
+      );
+
+      setUser(response.data);
+      setCurrentPage(safePage);
+    } catch (error) {
+      console.log("Error actualizando progreso:", error);
+    }
+  };
+
   if (isLoading) {
     return <p>Cargando libro...</p>;
   }
@@ -30,8 +104,11 @@ function BookDetailsPage() {
     return <p>No se pudo cargar el libro.</p>;
   }
 
-  const fakeProgress = 64;
-  const fakePages = 342;
+  const progressPercent =
+    book.pages && currentPage
+      ? Math.round((Number(currentPage) / book.pages) * 100)
+      : 0;
+
   const mainGenre = book.genre?.[0] || "Literatura";
 
   return (
@@ -39,23 +116,49 @@ function BookDetailsPage() {
       <div className="book-details-layout">
         <div className="book-details-left">
           <div className="book-cover-card">
-            <img src={book.coverImage} alt={book.title} />
+            <img
+              src={book.coverImage || "https://via.placeholder.com/300x450?text=No+Cover"}
+              alt={book.title}
+            />
           </div>
 
           <div className="book-action-buttons">
-            <button className="book-btn book-btn-primary">
-              + Añadir a
-            </button>
+            <select
+              className="book-status-select"
+              value={readingStatus}
+              onChange={handleReadingStatusChange}
+            >
+              <option value="" disabled>
+                + Añadir a
+              </option>
+              <option value="wantToRead">Pendiente</option>
+              <option value="currentlyReading">Leyendo</option>
+              <option value="read">Leído</option>
+            </select>
 
-            <button className="book-btn book-btn-secondary">
-              Actualizar progreso
-            </button>
+            <div className="progress-update-box">
+              <input
+                type="number"
+                min="0"
+                max={book.pages}
+                value={currentPage}
+                onChange={(e) => setCurrentPage(e.target.value)}
+                className="progress-input"
+                placeholder={`Páginas leídas`}
+              />
+              <button
+                className="book-btn book-btn-secondary"
+                onClick={handleUpdateProgress}
+              >
+                Actualizar progreso
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="book-details-right">
           <p className="book-meta-top">
-            {mainGenre.toUpperCase()} • {fakePages} PÁGINAS
+            {mainGenre.toUpperCase()} • {book.pages} PÁGINAS
           </p>
 
           <h1 className="book-title">{book.title}</h1>
@@ -67,25 +170,26 @@ function BookDetailsPage() {
           <div className="book-progress-card">
             <div className="book-progress-header">
               <span>Progreso actual</span>
-              <span>{fakeProgress}%</span>
+              <span>{progressPercent}%</span>
             </div>
 
             <div className="book-progress-bar">
               <div
                 className="book-progress-fill"
-                style={{ width: `${fakeProgress}%` }}
+                style={{ width: `${progressPercent}%` }}
               />
             </div>
 
             <p className="book-progress-quote">
-              “Between life and death there is a library...”
+              Página {currentPage} de {book.pages}
             </p>
           </div>
 
           <div className="book-synopsis">
             <h2>Sinopsis</h2>
             <p>
-              {book.description || "Todavía no hay descripción disponible para este libro."}
+              {book.description ||
+                "Todavía no hay descripción disponible para este libro."}
             </p>
           </div>
 

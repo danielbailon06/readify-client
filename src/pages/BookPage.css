@@ -1,0 +1,110 @@
+.book-page {
+  padding: 60px 80px;
+  background-color: #faf9f5;
+  min-height: 100vh;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.book-page h1 {
+  font-family: "Noto Serif", serif;
+  font-size: 42px;
+  color: #b9643c;
+  margin-bottom: 10px;
+}
+
+.search-info {
+  color: #8b867f;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 999px;
+  border: none;
+  background-color: #ece9e4;
+  margin-bottom: 40px;
+  font-size: 15px;
+  outline: none;
+}
+
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.book-card {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+.book-cover {
+  width: 120px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #e5e2dc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+.book-info {
+  max-width: 700px;
+}
+
+.book-title {
+  font-family: "Noto Serif", serif;
+  font-size: 22px;
+  color: #2f2a26;
+  margin: 0;
+}
+
+.book-author {
+  font-size: 14px;
+  color: #8b867f;
+  margin-bottom: 10px;
+}
+
+.book-description {
+  font-size: 15px;
+  color: #5f5953;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+
+.book-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.book-tag {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background-color: #dbe7dd;
+  color: #3d5c45;
+  font-weight: 600;
+}
+
+
+.empty-state {
+  color: #7a746b;
+  font-size: 16px;
+  margin-top: 40px;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+
+.book-card:hover {
+  transform: translateY(-2px);
+  transition: 0.2s ease;
+}

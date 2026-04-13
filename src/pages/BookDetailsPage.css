@@ -39,8 +39,10 @@
 
 .book-action-buttons {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
 }
 
 .book-btn {
@@ -59,14 +61,10 @@
   opacity: 0.95;
 }
 
-.book-btn-primary {
-  background-color: #b9643c;
-  color: white;
-}
-
 .book-btn-secondary {
   background-color: #cfe2c8;
   color: #3d563f;
+  width: 100%;
 }
 
 .book-meta-top {
@@ -171,6 +169,49 @@
   text-transform: uppercase;
 }
 
+.book-status-select {
+  width: 100%;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background-color: #b9643c;
+  color: white;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-sizing: border-box;
+}
+
+.book-status-select option {
+  background: white;
+  color: #2f2a26;
+}
+
+.progress-update-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.progress-input {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: 1px solid #d8d2c8;
+  background-color: #fffdf9;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
 @media (max-width: 1100px) {
   .book-details-layout {
     grid-template-columns: 1fr;
@@ -202,5 +243,6 @@
 
   .book-action-buttons {
     flex-direction: column;
+    max-width: 100%;
   }
 }

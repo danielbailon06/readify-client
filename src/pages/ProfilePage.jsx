@@ -1,10 +1,14 @@
 import "./ProfilePage.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { FiMapPin } from "react-icons/fi";
-import { FaFireAlt, FaStar } from "react-icons/fa";
+import { FiMapPin, FiEdit2 } from "react-icons/fi";
+import { FaFireAlt} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 function ProfilePage() {
+  const { user, setUser } = useContext(AuthContext);
+
   const [shelves, setShelves] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
   const [isLoadingShelves, setIsLoadingShelves] = useState(true);
@@ -19,6 +23,10 @@ function ProfilePage() {
   const [openAddBookShelfId, setOpenAddBookShelfId] = useState(null);
   const [selectedBookIdByShelf, setSelectedBookIdByShelf] = useState({});
 
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileBio, setProfileBio] = useState("");
+  const [profileLocation, setProfileLocation] = useState("");
+
   const storedToken = localStorage.getItem("authToken");
 
   const authConfig = {
@@ -26,6 +34,13 @@ function ProfilePage() {
       Authorization: `Bearer ${storedToken}`,
     },
   };
+
+  useEffect(() => {
+    if (user) {
+      setProfileBio(user.bio || "");
+      setProfileLocation(user.location || "");
+    }
+  }, [user]);
 
   const loadShelves = async () => {
     try {
@@ -62,6 +77,33 @@ function ProfilePage() {
 
     fetchData();
   }, []);
+
+  const handleUpdateProfile = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5005/api/users/${user._id}`,
+        {
+          username: user.username,
+          email: user.email,
+          profileImage: user.profileImage || "",
+          bio: profileBio,
+          location: profileLocation,
+        },
+        authConfig
+      );
+
+      setUser(response.data);
+      setIsEditingProfile(false);
+    } catch (error) {
+      console.log("Error updating profile:", error);
+    }
+  };
+
+  const handleCancelProfileEdit = () => {
+    setProfileBio(user?.bio || "");
+    setProfileLocation(user?.location || "");
+    setIsEditingProfile(false);
+  };
 
   const handleCreateShelf = async (e) => {
     e.preventDefault();
@@ -185,22 +227,70 @@ function ProfilePage() {
     <div className="profile-page">
       <div className="profile-top-card">
         <div className="profile-avatar-wrapper">
-          <img src="" alt="Profile avatar" className="profile-avatar" />
+          <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Profile avatar" className="profile-avatar" />
         </div>
 
         <div className="profile-top-info">
-          <h1 className="profile-name">Usuario 1</h1>
+          {isEditingProfile ? (
+            <>
+              <div className="profile-info-header">
+                <div className="profile-info-text">
+                  <h1 className="profile-name">{user?.username || "Usuario"}</h1>
+                </div>
+              </div>
 
-          <div className="profile-location">
-            <FiMapPin />
-            <span>Ubicación</span>
-          </div>
+              <div className="profile-edit-fields">
+                <input
+                  type="text"
+                  className="profile-edit-input"
+                  placeholder="Ubicación"
+                  value={profileLocation}
+                  onChange={(e) => setProfileLocation(e.target.value)}
+                />
 
-          <p className="profile-bio">
-            “Lector empedernido de realismo mágico y amante del café. Normalmente
-            me encontrarás en un rincón con un buen libro de bolsillo y un latte
-            de lavanda.”
-          </p>
+                <textarea
+                  className="profile-edit-textarea"
+                  placeholder="Escribe tu bio..."
+                  value={profileBio}
+                  onChange={(e) => setProfileBio(e.target.value)}
+                />
+              </div>
+
+              <div className="profile-edit-actions">
+                <button type="button" onClick={handleUpdateProfile}>
+                  Guardar
+                </button>
+                <button type="button" onClick={handleCancelProfileEdit}>
+                  Cancelar
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="profile-info-header">
+                <div className="profile-info-text">
+                  <h1 className="profile-name">{user?.username || "Usuario"}</h1>
+
+                  <div className="profile-location">
+                    <FiMapPin />
+                    <span>{user?.location || "Añade tu ubicación"}</span>
+                  </div>
+
+                  <p className="profile-bio">
+                    {user?.bio || "Añade una bio para contar tu historia ✨"}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  className="edit-profile-icon-btn"
+                  onClick={() => setIsEditingProfile(true)}
+                >
+                  <FiEdit2 />
+                </button>
+              </div>
+            </>
+          )}
 
           <div className="profile-badges">
             <span className="profile-badge badge-green">Lector destacado</span>
@@ -216,7 +306,7 @@ function ProfilePage() {
           <div className="section-title-row">
             <h2>
               <FaFireAlt className="section-icon" />
-              Un año lleno de historias · 2025
+              Un año lleno de historias · {new Date().getFullYear()}
             </h2>
           </div>
 
@@ -224,7 +314,7 @@ function ProfilePage() {
             <div className="journey-top-row">
               <div className="journey-books">
                 <span className="journey-main-number">24</span>
-                <span className="journey-secondary-text">/ 50 libros leidos</span>
+                <span className="journey-secondary-text">/ 50 libros leídos</span>
               </div>
 
               <div className="journey-complete">48% Completado</div>
@@ -236,8 +326,8 @@ function ProfilePage() {
 
             <div className="journey-stats">
               <div className="journey-stat">
-                <span className="journey-stat-label">Racha de lectura</span>
-                <span className="journey-stat-value">12 Días</span>
+                <span className="journey-stat-label">En proceso</span>
+                <span className="journey-stat-value">4 libros</span>
               </div>
 
               <div className="journey-stat">
@@ -246,9 +336,9 @@ function ProfilePage() {
               </div>
 
               <div className="journey-stat">
-                <span className="journey-stat-label">Valoración media</span>
+                <span className="journey-stat-label">Libros leídos esta semana</span>
                 <span className="journey-stat-value">
-                  4.2 <FaStar />
+                  2
                 </span>
               </div>
             </div>
@@ -263,7 +353,7 @@ function ProfilePage() {
 
           <div className="friends-card">
             <div className="friend-item">
-              <img src="" alt="Julian" className="friend-avatar" />
+              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Julian" className="friend-avatar" />
               <div className="friend-info">
                 <h4>Usuario 2</h4>
                 <p>Leyendo: Dune</p>
@@ -271,7 +361,7 @@ function ProfilePage() {
             </div>
 
             <div className="friend-item">
-              <img src="" alt="Sarah" className="friend-avatar" />
+              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Sarah" className="friend-avatar" />
               <div className="friend-info">
                 <h4>Usuario 3</h4>
                 <p>Leyendo: 1984</p>
@@ -279,7 +369,7 @@ function ProfilePage() {
             </div>
 
             <div className="friend-item">
-              <img src="" alt="Leo" className="friend-avatar" />
+              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Leo" className="friend-avatar" />
               <div className="friend-info">
                 <h4>Usuario 4</h4>
                 <p>Leído: 1985</p>
@@ -299,7 +389,7 @@ function ProfilePage() {
         <form className="create-shelf-form" onSubmit={handleCreateShelf}>
           <input
             type="text"
-            placeholder="Nombre de la Estantería"
+            placeholder="Nombre de la estantería"
             value={newShelfName}
             onChange={(e) => setNewShelfName(e.target.value)}
           />
@@ -380,16 +470,22 @@ function ProfilePage() {
                         {shelf.books && shelf.books.length > 0 ? (
                           shelf.books.map((book) => (
                             <div key={book._id} className="shelf-book-card">
-                              <img
-                                src={
-                                  book.coverImage ||
-                                  "https://via.placeholder.com/120x180?text=Book"
-                                }
-                                alt={book.title}
-                                className="shelf-book-cover"
-                              />
-                              <h4>{book.title}</h4>
-                              <p>{book.author}</p>
+                              <Link
+                                to={`/books/${book._id}`}
+                                className="shelf-book-link"
+                              >
+                                <img
+                                  src={
+                                    book.coverImage ||
+                                    "https://via.placeholder.com/120x180?text=Book"
+                                  }
+                                  alt={book.title}
+                                  className="shelf-book-cover"
+                                />
+                                <h4>{book.title}</h4>
+                                <p>{book.author}</p>
+                              </Link>
+
                               <button
                                 type="button"
                                 onClick={() =>
