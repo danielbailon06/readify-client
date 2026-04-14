@@ -13,7 +13,7 @@ import ProfilePage from "./pages/ProfilePage";
 import BookPage from "./pages/BookPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import LibraryPage from "./pages/LibraryPage";
-import ShelfDetailsPage from "./pages/ShelfDetailsPage";
+import UserProfilePage from "./pages/UserProfilePage";
 
 function App() {
   const { isLoggedIn, isLoading } = useContext(AuthContext);
@@ -36,6 +36,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/books" element={<BookPage />} />
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
+        <Route path="/users/:userId" element={<UserProfilePage />} />
+        
 
         <Route
           path="/profile"
@@ -55,14 +57,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/shelves/:shelfId"
-          element={
-            <PrivateRoute>
-              <ShelfDetailsPage />
-            </PrivateRoute>
-          }
-        />
       </Routes>
     </>
   );

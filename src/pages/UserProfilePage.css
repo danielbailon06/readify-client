@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.user-profile-page {
+  min-height: 100vh;
+  background-color: #faf9f5;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+.user-profile-container {
+  width: 100%;
+}
+
+.user-profile-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  text-decoration: none;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #b9643c;
+}
+
+.user-profile-top-card {
+  background: #fffdf9;
+  border-radius: 40px;
+  padding: 28px 30px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+.user-profile-avatar-wrapper {
+  flex-shrink: 0;
+}
+
+.user-profile-avatar {
+  width: 145px;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 32px;
+  display: block;
+}
+
+.user-profile-top-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.user-profile-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+.user-profile-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.user-profile-name {
+  margin: 0;
+  font-family: "Noto Serif", serif;
+  font-size: 2.1rem;
+  color: #2a2826;
+  line-height: 1.05;
+}
+
+.user-profile-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #61715d;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.user-profile-bio {
+  margin: 0;
+  max-width: 760px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #6f6963;
+  font-style: italic;
+}
+
+.user-profile-badges {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.user-profile-badge {
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.user-badge-green {
+  background-color: #d8e5cf;
+  color: #5c7254;
+}
+
+.user-badge-peach {
+  background-color: #f1d4c2;
+  color: #c06b43;
+}
+
+.user-profile-content-grid {
+  margin-top: 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.user-profile-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.user-section-title-row {
+  margin-bottom: 18px;
+}
+
+.user-section-title-row h2 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Noto Serif", serif;
+  font-size: 2rem;
+  color: #37322e;
+}
+
+.user-reading-journey-card {
+  background: #f7f4ee;
+  border-radius: 36px;
+  padding: 34px 30px 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+}
+
+.user-journey-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #ebe4db;
+  padding-top: 24px;
+}
+
+.user-journey-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.user-journey-stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 6px;
+  width: 1px;
+  height: 54px;
+  background-color: #ebe4db;
+}
+
+.user-journey-stat-label {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #8b837b;
+}
+
+.user-journey-stat-value {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #393430;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-books-card {
+  background: #fffdf9;
+  border-radius: 34px;
+  padding: 26px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+.user-books-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.user-books-header h3 {
+  margin: 0;
+  font-family: "Noto Serif", serif;
+  font-size: 1.5rem;
+  color: #37322e;
+}
+
+.user-books-count {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #c06b43;
+}
+
+.user-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.user-book-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-book-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.user-book-cover {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  background-color: #ece7df;
+}
+
+.user-book-card h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #2f2a26;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.user-book-card p {
+  margin: 0;
+  font-size: 11px;
+  color: #7a746b;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.user-empty-text {
+  color: #7a746b;
+  font-size: 15px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin: 0;
+}
+
+.user-profile-loading,
+.user-profile-error {
+  min-height: 100vh;
+  background-color: #faf9f5;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #7a746b;
+}
+
+@media (max-width: 760px) {
+  .user-profile-page {
+    padding: 24px 18px 40px;
+  }
+
+  .user-profile-top-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-profile-info-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .user-profile-name {
+    font-size: 1.8rem;
+  }
+
+  .user-section-title-row h2 {
+    font-size: 1.5rem;
+  }
+
+  .user-journey-stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .user-journey-stat:not(:last-child)::after {
+    display: none;
+  }
+}

@@ -2,12 +2,14 @@ import "./ProfilePage.css";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { FiMapPin, FiEdit2 } from "react-icons/fi";
-import { FaFireAlt} from "react-icons/fa";
+import { FaFireAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
 function ProfilePage() {
   const { user, setUser } = useContext(AuthContext);
+
+  const [profileUser, setProfileUser] = useState(null);
 
   const [shelves, setShelves] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
@@ -63,11 +65,29 @@ function ProfilePage() {
     }
   };
 
+  const loadProfileUser = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5005/api/users/${user._id}`
+      );
+      setProfileUser(response.data);
+    } catch (error) {
+      console.log("Error loading profile user:", error);
+    }
+  };
+
   useEffect(() => {
+    if (!user?._id) return;
+
     const fetchData = async () => {
       try {
         setIsLoadingShelves(true);
-        await Promise.all([loadShelves(), loadBooks()]);
+        await Promise.all([
+          loadShelves(),
+          loadBooks(),
+          loadProfileUser(),
+          loadReaderUsers(),
+        ]);
       } catch (error) {
         console.log(error);
       } finally {
@@ -76,7 +96,7 @@ function ProfilePage() {
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   const handleUpdateProfile = async () => {
     try {
@@ -93,6 +113,10 @@ function ProfilePage() {
       );
 
       setUser(response.data);
+      setProfileUser((prev) => ({
+        ...prev,
+        ...response.data,
+      }));
       setIsEditingProfile(false);
     } catch (error) {
       console.log("Error updating profile:", error);
@@ -223,11 +247,72 @@ function ProfilePage() {
     return allBooks.filter((book) => !shelfBookIds.includes(book._id));
   };
 
+  const readingGoal = 50;
+
+  const readBooks = profileUser?.read || [];
+  const currentlyReadingBooks = profileUser?.currentlyReading || [];
+  const readingProgress = profileUser?.readingProgress || {};
+
+  const completedBooksCount = readBooks.length;
+  const currentlyReadingCount = currentlyReadingBooks.length;
+
+  const completedPercentage = Math.min(
+    Math.round((completedBooksCount / readingGoal) * 100),
+    100
+  );
+
+  const totalPagesReadFromRead = readBooks.reduce((total, book) => {
+    return total + (book.pages || 0);
+  }, 0);
+
+  const totalPagesReadFromCurrent = currentlyReadingBooks.reduce(
+    (total, book) => {
+      const currentPage = Number(readingProgress[book._id]) || 0;
+      return total + currentPage;
+    },
+    0
+  );
+
+  const totalPagesRead = totalPagesReadFromRead + totalPagesReadFromCurrent;
+
+  const genreCount = {};
+
+  readBooks.forEach((book) => {
+    if (book.genre && Array.isArray(book.genre)) {
+      book.genre.forEach((genre) => {
+        genreCount[genre] = (genreCount[genre] || 0) + 1;
+      });
+    }
+  });
+
+  const favoriteGenre =
+    Object.keys(genreCount).length > 0
+      ? Object.entries(genreCount).sort((a, b) => b[1] - a[1])[0][0]
+      : "—";
+
+  const [readerUsers, setReaderUsers] = useState([]);
+
+  const loadReaderUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5005/api/users",
+        authConfig
+      );
+      setReaderUsers(response.data);
+    } catch (error) {
+      console.log("Error loading users:", error);
+    }
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-top-card">
         <div className="profile-avatar-wrapper">
-          <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Profile avatar" className="profile-avatar" />
+          <img
+            src={profileUser?.profileImage || user?.profileImage || "/avatars/avatar5.png"}
+            alt="Profile avatar"
+            className="profile-avatar"
+          />
         </div>
 
         <div className="profile-top-info">
@@ -313,33 +398,43 @@ function ProfilePage() {
           <div className="reading-journey-card">
             <div className="journey-top-row">
               <div className="journey-books">
-                <span className="journey-main-number">24</span>
-                <span className="journey-secondary-text">/ 50 libros leídos</span>
+                <span className="journey-main-number">
+                  {completedBooksCount}
+                </span>
+                <span className="journey-secondary-text">
+                  / {readingGoal} libros leídos
+                </span>
               </div>
 
-              <div className="journey-complete">48% Completado</div>
+              <div className="journey-complete">
+                {completedPercentage}% Completado
+              </div>
             </div>
 
             <div className="journey-progress-bar">
-              <div className="journey-progress-fill"></div>
+              <div
+                className="journey-progress-fill"
+                style={{ width: `${completedPercentage}%` }}
+              ></div>
             </div>
 
             <div className="journey-stats">
               <div className="journey-stat">
                 <span className="journey-stat-label">En proceso</span>
-                <span className="journey-stat-value">4 libros</span>
-              </div>
-
-              <div className="journey-stat">
-                <span className="journey-stat-label">Páginas de hoy</span>
-                <span className="journey-stat-value">42</span>
-              </div>
-
-              <div className="journey-stat">
-                <span className="journey-stat-label">Libros leídos esta semana</span>
                 <span className="journey-stat-value">
-                  2
+                  {currentlyReadingCount}{" "}
+                  {currentlyReadingCount === 1 ? "libro" : "libros"}
                 </span>
+              </div>
+
+              <div className="journey-stat">
+                <span className="journey-stat-label">Páginas leídas</span>
+                <span className="journey-stat-value">{totalPagesRead}</span>
+              </div>
+
+              <div className="journey-stat">
+                <span className="journey-stat-label">Género favorito</span>
+                <span className="journey-stat-value">{favoriteGenre}</span>
               </div>
             </div>
           </div>
@@ -348,35 +443,54 @@ function ProfilePage() {
         <div className="profile-right-column">
           <div className="section-title-row friends-title-row">
             <h2>Almas lectoras</h2>
-            <span className="view-all">Ver todos</span>
           </div>
 
           <div className="friends-card">
-            <div className="friend-item">
-              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Julian" className="friend-avatar" />
-              <div className="friend-info">
-                <h4>Usuario 2</h4>
-                <p>Leyendo: Dune</p>
-              </div>
-            </div>
+            {readerUsers.length > 0 ? (
+              readerUsers.slice(0, 3).map((reader) => {
+                const currentBook = reader.currentlyReading?.[0];
+                const lastReadBook = reader.read?.[0];
 
-            <div className="friend-item">
-              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Sarah" className="friend-avatar" />
-              <div className="friend-info">
-                <h4>Usuario 3</h4>
-                <p>Leyendo: 1984</p>
-              </div>
-            </div>
+                return (
+                  <Link
+                    to={`/users/${reader._id}`}
+                    className="friend-item"
+                  >
+                    <img
+                      src={reader.profileImage || "/avatars/avatar1.png"}
+                      alt={reader.username}
+                      className="friend-avatar"
+                      onError={(e) => {
+                        e.target.src = "/avatars/avatar1.png";
+                      }}
+                    />
 
-            <div className="friend-item">
-              <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Leo" className="friend-avatar" />
-              <div className="friend-info">
-                <h4>Usuario 4</h4>
-                <p>Leído: 1985</p>
-              </div>
-            </div>
+                    <div className="friend-info">
+                      <h4>{reader.username}</h4>
 
-            <button className="find-friends-btn">Descubrir lectores</button>
+                      <p>
+                        {currentBook
+                          ? `Leyendo: ${currentBook.title}`
+                          : lastReadBook
+                            ? `Leído: ${lastReadBook.title}`
+                            : "Aún no ha añadido lecturas"}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              <p className="friends-empty-text">
+                Todavía no hay otras almas lectoras por aquí.
+              </p>
+            )}
+
+            <button
+              className="find-friends-btn"
+              onClick={loadReaderUsers}
+            >
+              Descubrir lectores
+            </button>
           </div>
         </div>
       </div>
