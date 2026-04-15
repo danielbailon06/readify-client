@@ -51,7 +51,7 @@ function ChatWidget() {
             const storedToken = localStorage.getItem("authToken");
 
             const response = await axios.post(
-                "http://localhost:5005/api/chat",
+                `${import.meta.env.VITE_API_URL}/api/chat`,
                 {
                     message: trimmedInput,
                     previousResponseId,

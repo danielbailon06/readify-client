@@ -4,7 +4,7 @@ import axios from "axios";
 import "./SignupPage.css";
 import signupImg from "../assets/library-signup.png";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5005";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function SignupPage() {
   const [formData, setFormData] = useState({

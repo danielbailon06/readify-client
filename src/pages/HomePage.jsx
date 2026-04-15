@@ -31,7 +31,7 @@ function HomePage() {
     if (!user?._id) return;
 
     axios
-      .get(`http://localhost:5005/api/users/${user._id}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/users/${user._id}`)
       .then((response) => {
         setHomeUser(response.data);
       })

@@ -47,7 +47,7 @@ function ProfilePage() {
   const loadShelves = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5005/api/shelves",
+        `${import.meta.env.VITE_API_URL}/api/shelves`,
         authConfig
       );
       setShelves(response.data);
@@ -58,7 +58,7 @@ function ProfilePage() {
 
   const loadBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:5005/api/books");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/books`);
       setAllBooks(response.data);
     } catch (error) {
       console.log("Error loading books:", error);
@@ -68,7 +68,7 @@ function ProfilePage() {
   const loadProfileUser = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5005/api/users/${user._id}`
+        `${import.meta.env.VITE_API_URL}/api/users/${user._id}`
       );
       setProfileUser(response.data);
     } catch (error) {
@@ -101,7 +101,7 @@ function ProfilePage() {
   const handleUpdateProfile = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5005/api/users/${user._id}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${user._id}`,
         {
           username: user.username,
           email: user.email,
@@ -136,7 +136,7 @@ function ProfilePage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5005/api/shelves",
+        `${import.meta.env.VITE_API_URL}/api/shelves`,
         {
           name: newShelfName,
           description: newShelfDescription,
@@ -169,7 +169,7 @@ function ProfilePage() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5005/api/shelves/${shelfId}`,
+        `${import.meta.env.VITE_API_URL}/api/shelves/${shelfId}`,
         {
           name: editName,
           description: editDescription,
@@ -190,7 +190,7 @@ function ProfilePage() {
   const handleDeleteShelf = async (shelfId) => {
     try {
       await axios.delete(
-        `http://localhost:5005/api/shelves/${shelfId}`,
+        `${import.meta.env.VITE_API_URL}/api/shelves/${shelfId}`,
         authConfig
       );
 
@@ -207,7 +207,7 @@ function ProfilePage() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/shelves/${shelfId}/books`,
+        `${import.meta.env.VITE_API_URL}/api/shelves/${shelfId}/books`,
         { bookId: selectedBookId },
         authConfig
       );
@@ -230,7 +230,7 @@ function ProfilePage() {
   const handleRemoveBookFromShelf = async (shelfId, bookId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5005/api/shelves/${shelfId}/books/${bookId}`,
+        `${import.meta.env.VITE_API_URL}/api/shelves/${shelfId}/books/${bookId}`,
         authConfig
       );
 
@@ -295,7 +295,7 @@ function ProfilePage() {
   const loadReaderUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5005/api/users",
+        `${import.meta.env.VITE_API_URL}/api/users`,
         authConfig
       );
       setReaderUsers(response.data);

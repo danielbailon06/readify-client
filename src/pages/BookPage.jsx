@@ -15,7 +15,7 @@ function BookPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5005/api/books")
+      .get(`${import.meta.env.VITE_API_URL}/api/books`)
       .then((response) => {
         setBooks(response.data);
         setIsLoading(false);

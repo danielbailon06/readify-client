@@ -18,8 +18,8 @@ function LibraryPage() {
     if (!user?._id) return;
 
     Promise.all([
-      axios.get(`http://localhost:5005/api/users/${user._id}`),
-      axios.get("http://localhost:5005/api/books"),
+      axios.get(`${import.meta.env.VITE_API_URL}/api/users/${user._id}`),
+      axios.get(`${import.meta.env.VITE_API_URL}/api/books`),
     ])
       .then(([userResponse, booksResponse]) => {
         setLibraryUser(userResponse.data);

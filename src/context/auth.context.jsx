@@ -27,7 +27,7 @@ function AuthProviderWrapper(props) {
     }
 
     try {
-      const response = await axios.get("http://localhost:5005/api/auth/verify", {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/verify`, {
         headers: {
           Authorization: `Bearer ${storedToken}`,
         },

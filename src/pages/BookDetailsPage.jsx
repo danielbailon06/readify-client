@@ -23,7 +23,7 @@ function BookDetailsPage() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5005/api/books/${bookId}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/books/${bookId}`)
       .then((response) => {
         setBook(response.data);
         setIsLoading(false);
@@ -62,7 +62,7 @@ function BookDetailsPage() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5005/api/users/${user._id}/reading-status`,
+        `${import.meta.env.VITE_API_URL}/api/users/${user._id}/reading-status`,
         {
           bookId,
           status: newStatus,
@@ -82,7 +82,7 @@ function BookDetailsPage() {
       const safePage = Math.min(Number(currentPage), book.pages || 0);
 
       const response = await axios.put(
-        `http://localhost:5005/api/users/${user._id}/progress/${bookId}`,
+        `${import.meta.env.VITE_API_URL}/api/users/${user._id}/progress/${bookId}`,
         {
           currentPage: safePage,
         },
