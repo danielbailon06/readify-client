@@ -42,7 +42,7 @@ function ProfilePage() {
       setProfileBio(user.bio || "");
       setProfileLocation(user.location || "");
     }
-  }, [user?._id]);
+  }, [user]);
 
   const loadShelves = async () => {
     try {
@@ -96,7 +96,7 @@ function ProfilePage() {
     };
 
     fetchData();
-  }, [user]);
+  }, [user?._id]);
 
   const handleUpdateProfile = async () => {
     try {
