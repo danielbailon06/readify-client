@@ -105,7 +105,7 @@ function ChatWidget() {
                 {isLoading && (
                     <div className="chat-bubble chat-bubble-assistant">
                         <span className="chat-bubble-role">Lumi</span>
-                        <p>Escribiendo...</p>
+                        <p>Lumi está escribiendo... 🌙</p>
                     </div>
                 )}
                 <div ref={messagesEndRef} />
