@@ -295,8 +295,15 @@ function HomePage() {
           </div>
 
           <p>
-            Has leído {completedBooks} de 5 libros este mes. Vas por buen camino
-            para el objetivo anual ✨
+            {completedBooks === 0 && "Aún no has empezado este mes… ¿buscamos tu próxima lectura? ✨📖"}
+
+            {completedBooks === 1 && "Buen comienzo ✨ ya has leído tu primer libro del mes 📖"}
+
+            {completedBooks >= 2 && completedBooks < 5 &&
+              `Has leído ${completedBooks} de 5 libros este mes. Vas por buen camino ✨`}
+
+            {completedBooks >= 5 &&
+              "Increíble 😮‍🔥 ya has alcanzado tu objetivo mensual. ¡Sigue con ese ritmo!"}
           </p>
         </div>
       </div>
@@ -487,23 +494,24 @@ function HomePage() {
               </div>
             </a>
             <a href="https://www.myrealfood.app/es/recipe/Msqdp2kDeDnukskQasMe" target="_blank" className="tea-link">
-            <div className="tea-card">
-              <div className="tea-card-icon">✨</div>
-              <h4>Menta para aventura</h4>
-              <p>
-                Fresca y ligera, acompaña genial historias rápidas, fantásticas y
-                llenas de movimiento.
-              </p>
-            </div>
-          </a>
+              <div className="tea-card">
+                <div className="tea-card-icon">✨</div>
+                <h4>Menta para aventura</h4>
+                <p>
+                  Fresca y ligera, acompaña genial historias rápidas, fantásticas y
+                  llenas de movimiento.
+                </p>
+              </div>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <audio ref={rainAudioRef} src="/sounds/rain.mp3" preload="auto" />
-      <audio ref={fireAudioRef} src="/sounds/fire.mp3" preload="auto" />
-      <audio ref={cafeAudioRef} src="/sounds/cafe.mp3" preload="auto" />
-    </div>
+        <audio ref={rainAudioRef} src="/sounds/rain.mp3" preload="auto" />
+        <audio ref={fireAudioRef} src="/sounds/fire.mp3" preload="auto" />
+        <audio ref={cafeAudioRef} src="/sounds/cafe.mp3" preload="auto" />
+      </div>
     </div >
+
   );
 }
 

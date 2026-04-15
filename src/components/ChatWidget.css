@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.chat-widget {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fffdf9;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.chat-widget-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: #faf7f2;
+  border-radius: 22px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 14px 16px;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.chat-bubble-role {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #7a6859;
+}
+
+.chat-bubble p {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4d3d31;
+  white-space: pre-wrap;
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: #ead7c3;
+}
+
+.chat-bubble-assistant {
+  align-self: flex-start;
+  background: #fffaf3;
+  border: 1px solid rgba(180, 151, 122, 0.18);
+}
+
+.chat-widget-form {
+  flex-shrink: 0;
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.chat-widget-form input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  border: 1px solid #e5d8ca;
+  background: #fff;
+  border-radius: 16px;
+  padding: 0 14px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  color: #4d3d31;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.chat-widget-form input:focus {
+  border-color: #c4a889;
+  box-shadow: 0 0 0 4px rgba(196, 168, 137, 0.12);
+}
+
+.chat-widget-form button {
+  flex-shrink: 0;
+  height: 48px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 16px;
+  background: #b9643c;
+  color: white;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chat-widget-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

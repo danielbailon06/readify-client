@@ -128,6 +128,7 @@
 .home-empty-currently p {
     color: #7b746e;
     margin-bottom: 16px;
+    font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .home-month-card {

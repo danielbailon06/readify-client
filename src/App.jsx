@@ -14,6 +14,7 @@ import BookPage from "./pages/BookPage";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import LibraryPage from "./pages/LibraryPage";
 import UserProfilePage from "./pages/UserProfilePage";
+import ChatFloating from "./components/ChatFloating";
 
 function App() {
   const { isLoggedIn, isLoading } = useContext(AuthContext);
@@ -21,6 +22,10 @@ function App() {
 
   const hideNavbarRoutes = ["/login", "/signup"];
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  const hideChatRoutes = ["/login", "/signup"];
+  const shouldShowChat =
+    isLoggedIn && !hideChatRoutes.includes(location.pathname);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -37,7 +42,6 @@ function App() {
         <Route path="/books" element={<BookPage />} />
         <Route path="/books/:bookId" element={<BookDetailsPage />} />
         <Route path="/users/:userId" element={<UserProfilePage />} />
-        
 
         <Route
           path="/profile"
@@ -56,8 +60,9 @@ function App() {
             </PrivateRoute>
           }
         />
-
       </Routes>
+
+      {shouldShowChat && <ChatFloating />}
     </>
   );
 }

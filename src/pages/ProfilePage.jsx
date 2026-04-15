@@ -304,6 +304,19 @@ function ProfilePage() {
     }
   };
 
+  const possibleBadges = [
+    "Lector destacado",
+    "Coleccionista de historias",
+    "Devora libros",
+    "Amante del romantasy",
+    "Explorador de mundos",
+    "Lector nocturno",
+  ];
+
+  const badges = possibleBadges
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 2);
+
   return (
     <div className="profile-page">
       <div className="profile-top-card">
@@ -378,10 +391,15 @@ function ProfilePage() {
           )}
 
           <div className="profile-badges">
-            <span className="profile-badge badge-green">Lector destacado</span>
-            <span className="profile-badge badge-peach">
-              Coleccionista de historias
-            </span>
+            {badges.map((badge, index) => (
+              <span
+                key={index}
+                className={`profile-badge ${index === 0 ? "badge-green" : "badge-peach"
+                  }`}
+              >
+                {badge}
+              </span>
+            ))}
           </div>
         </div>
       </div>

@@ -55,6 +55,18 @@ function LibraryPage() {
     background: `conic-gradient(#5f775d ${yearlyProgressPercent}%, #cfe2c8 ${yearlyProgressPercent}% 100%)`,
   };
 
+  const quotes = [
+    "Un ratito de lectura, un refugio para el alma...",
+    "Perderse en un libro también es encontrarse 📖",
+    "Hoy es un buen día para empezar una historia nueva...",
+    "Entre páginas todo encaja un poquito más 🤍",
+    "Un capítulo más… y ya (mentira) 😏📖",
+    "Leer también es una forma de descansar",
+    "Cada libro es un pequeño viaje ✨",
+  ];
+
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
   return (
     <div className="library-page">
       <div className="library-top">
@@ -64,7 +76,32 @@ function LibraryPage() {
             <p>
               Un rincón de calma, lleno de historias que abrazan como un hogar.
             </p>
+
+            <div className="library-mini-stats">
+              <div className="library-mini-stat">
+                <span className="library-mini-number">
+                  {libraryUser.currentlyReading?.length || 0}
+                </span>
+                <span className="library-mini-label">leyendo</span>
+              </div>
+
+              <div className="library-mini-stat">
+                <span className="library-mini-number">
+                  {libraryUser.wantToRead?.length || 0}
+                </span>
+                <span className="library-mini-label">pendientes</span>
+              </div>
+
+              <div className="library-mini-stat">
+                <span className="library-mini-number">
+                  {libraryUser.read?.length || 0}
+                </span>
+                <span className="library-mini-label">leídos</span>
+              </div>
+            </div>
           </div>
+
+
 
           <div className="year-goal-card">
             <div className="year-goal-circle" style={progressCircleStyle}>
@@ -77,7 +114,7 @@ function LibraryPage() {
             </div>
 
             <h3>Meta anual</h3>
-            <p>“Un ratito de lectura, un refugio para el alma.”</p>
+            <p>{randomQuote}</p>
           </div>
         </div>
       </div>
@@ -133,10 +170,10 @@ function LibraryPage() {
               activeTab === "wantToRead"
                 ? 0
                 : activeTab === "read"
-                ? 100
-                : book.pages
-                ? Math.min(Math.round((currentPage / book.pages) * 100), 100)
-                : 0;
+                  ? 100
+                  : book.pages
+                    ? Math.min(Math.round((currentPage / book.pages) * 100), 100)
+                    : 0;
 
             return (
               <Link
