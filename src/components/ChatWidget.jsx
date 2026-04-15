@@ -7,6 +7,13 @@ function ChatWidget() {
     const [previousResponseId, setPreviousResponseId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [chatMemory, setChatMemory] = useState({
+        mood: "",
+        preferredGenres: [],
+        dislikedGenres: [],
+        shortReplies: false,
+    });
+
     const greetings = [
         "Holi ✨ soy Lumi, tu asistente virtual de lectura. ¿Buscamos tu próxima obsesión o vienes a cotillear libros conmigo? 😏📖",
         "Holi ✨ soy Lumi, tu asistente virtual. Dime tu mood y te encuentro la historia perfecta 📖",
@@ -17,12 +24,7 @@ function ChatWidget() {
     const randomGreeting =
         greetings[Math.floor(Math.random() * greetings.length)];
 
-    const [messages, setMessages] = useState([
-        {
-            role: "assistant",
-            content: randomGreeting,
-        },
-    ]);
+    const [messages, setMessages] = useState([]);
 
     const messagesEndRef = useRef(null);
 
@@ -30,12 +32,51 @@ function ChatWidget() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, isLoading]);
 
+    useEffect(() => {
+        const fetchChatHistory = async () => {
+            try {
+                const storedToken = localStorage.getItem("authToken");
 
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_URL}/api/chat/history`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${storedToken}`,
+                        },
+                    }
+                );
 
-    const handleSendMessage = async (e) => {
-        e.preventDefault();
+                if (response.data.chatHistory?.length > 0) {
+                    setMessages(response.data.chatHistory);
+                } else {
+                    setMessages([
+                        {
+                            role: "assistant",
+                            content: randomGreeting,
+                        },
+                    ]);
+                }
 
-        const trimmedInput = input.trim();
+                if (response.data.chatMemory) {
+                    setChatMemory(response.data.chatMemory);
+                }
+            } catch (error) {
+                console.error("Error al cargar historial del chat:", error);
+
+                setMessages([
+                    {
+                        role: "assistant",
+                        content: randomGreeting,
+                    },
+                ]);
+            }
+        };
+
+        fetchChatHistory();
+    }, []);
+
+    const handleSendMessageWithText = async (text) => {
+        const trimmedInput = text.trim();
         if (!trimmedInput || isLoading) return;
 
         const userMessage = {
@@ -63,6 +104,10 @@ function ChatWidget() {
                 }
             );
 
+            if (response.data.updatedMemory) {
+                setChatMemory(response.data.updatedMemory);
+            }
+
             const assistantMessage = {
                 role: "assistant",
                 content: response.data.reply || "Ups… no he sabido qué decir 😅",
@@ -86,14 +131,39 @@ function ChatWidget() {
         }
     };
 
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+        handleSendMessageWithText(input);
+    };
+
+    const quickSuggestions = [
+        "¿Qué leo hoy?",
+        "Recomiéndame algo cozy",
+        "Recomiéndame un libro",
+        "¿Qué tengo pendiente?",
+    ];
+
+    const handleQuickSuggestion = async (suggestion) => {
+        if (isLoading) return;
+
+        setInput(suggestion);
+
+        setTimeout(() => {
+            handleSendMessageWithText(suggestion);
+        }, 0);
+    };
+
     return (
         <section className="chat-widget">
             <div className="chat-widget-messages">
                 {messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`chat-bubble ${message.role === "user" ? "chat-bubble-user" : "chat-bubble-assistant"
-                            }`}
+                        className={`chat-bubble ${
+                            message.role === "user"
+                                ? "chat-bubble-user"
+                                : "chat-bubble-assistant"
+                        }`}
                     >
                         <span className="chat-bubble-role">
                             {message.role === "user" ? "Tú" : "Lumi"}
@@ -108,7 +178,22 @@ function ChatWidget() {
                         <p>Lumi está escribiendo... 🌙</p>
                     </div>
                 )}
+
                 <div ref={messagesEndRef} />
+            </div>
+
+            <div className="chat-quick-suggestions">
+                {quickSuggestions.map((suggestion) => (
+                    <button
+                        key={suggestion}
+                        type="button"
+                        className="chat-suggestion-chip"
+                        onClick={() => handleQuickSuggestion(suggestion)}
+                        disabled={isLoading}
+                    >
+                        {suggestion}
+                    </button>
+                ))}
             </div>
 
             <form className="chat-widget-form" onSubmit={handleSendMessage}>
@@ -122,7 +207,6 @@ function ChatWidget() {
                     Enviar
                 </button>
             </form>
-            
         </section>
     );
 }

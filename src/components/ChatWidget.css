@@ -105,3 +105,32 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+.chat-quick-suggestions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.chat-suggestion-chip {
+  border: none;
+  background: #e9e4df;
+  color: #7a6859;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.chat-suggestion-chip:hover {
+  background: #ddd6cf;
+}
+
+.chat-suggestion-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
