@@ -42,7 +42,7 @@ function ProfilePage() {
       setProfileBio(user.bio || "");
       setProfileLocation(user.location || "");
     }
-  }, [user]);
+  }, [user?._id]);
 
   const loadShelves = async () => {
     try {
@@ -313,9 +313,11 @@ function ProfilePage() {
     "Lector nocturno",
   ];
 
-  const badges = possibleBadges
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 2);
+  const [badges] = useState(() => {
+    return [...possibleBadges]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 2);
+  });
 
   return (
     <div className="profile-page">
@@ -471,6 +473,7 @@ function ProfilePage() {
 
                 return (
                   <Link
+                    key={reader._id}
                     to={`/users/${reader._id}`}
                     className="friend-item"
                   >
@@ -503,10 +506,7 @@ function ProfilePage() {
               </p>
             )}
 
-            <button
-              className="find-friends-btn"
-              onClick={loadReaderUsers}
-            >
+            <button className="find-friends-btn" onClick={loadReaderUsers}>
               Descubrir lectores
             </button>
           </div>
