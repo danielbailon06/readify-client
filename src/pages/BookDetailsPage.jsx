@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import { Link } from "react-router-dom";
 import "./BookDetailsPage.css";
 
 function BookDetailsPage() {
@@ -122,38 +123,40 @@ function BookDetailsPage() {
             />
           </div>
 
-          <div className="book-action-buttons">
-            <select
-              className="book-status-select"
-              value={readingStatus}
-              onChange={handleReadingStatusChange}
-            >
-              <option value="" disabled>
-                + Añadir a
-              </option>
-              <option value="wantToRead">Pendiente</option>
-              <option value="currentlyReading">Leyendo</option>
-              <option value="read">Leído</option>
-            </select>
-
-            <div className="progress-update-box">
-              <input
-                type="number"
-                min="0"
-                max={book.pages}
-                value={currentPage}
-                onChange={(e) => setCurrentPage(e.target.value)}
-                className="progress-input"
-                placeholder={`Páginas leídas`}
-              />
-              <button
-                className="book-btn book-btn-secondary"
-                onClick={handleUpdateProgress}
+          {user && (
+            <div className="book-action-buttons">
+              <select
+                className="book-status-select"
+                value={readingStatus}
+                onChange={handleReadingStatusChange}
               >
-                Actualizar progreso
-              </button>
+                <option value="" disabled>
+                  + Añadir a
+                </option>
+                <option value="wantToRead">Pendiente</option>
+                <option value="currentlyReading">Leyendo</option>
+                <option value="read">Leído</option>
+              </select>
+
+              <div className="progress-update-box">
+                <input
+                  type="number"
+                  min="0"
+                  max={book.pages}
+                  value={currentPage}
+                  onChange={(e) => setCurrentPage(e.target.value)}
+                  className="progress-input"
+                  placeholder="Páginas leídas"
+                />
+                <button
+                  className="book-btn book-btn-secondary"
+                  onClick={handleUpdateProgress}
+                >
+                  Actualizar progreso
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="book-details-right">
@@ -167,23 +170,29 @@ function BookDetailsPage() {
             Escrito por <span>{book.author}</span>
           </p>
 
-          <div className="book-progress-card">
-            <div className="book-progress-header">
-              <span>Progreso actual</span>
-              <span>{progressPercent}%</span>
-            </div>
+          {user ? (
+            <div className="book-progress-card">
+              <div className="book-progress-header">
+                <span>Progreso actual</span>
+                <span>{progressPercent}%</span>
+              </div>
 
-            <div className="book-progress-bar">
-              <div
-                className="book-progress-fill"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
+              <div className="book-progress-bar">
+                <div
+                  className="book-progress-fill"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
 
-            <p className="book-progress-quote">
-              Página {currentPage} de {book.pages}
+              <p className="book-progress-quote">
+                Página {currentPage} de {book.pages}
+              </p>
+            </div>
+          ) : (
+            <p className="book-login-hint">
+              <Link to="/login">Inicia sesión</Link> para guardar este libro y seguir tu progreso.
             </p>
-          </div>
+          )}
 
           <div className="book-synopsis">
             <h2>Sinopsis</h2>

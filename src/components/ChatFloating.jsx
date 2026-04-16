@@ -9,7 +9,8 @@ function ChatFloating() {
     <>
       {!isOpen && (
         <button className="chat-float-button" onClick={() => setIsOpen(true)}>
-          🌙
+          <span className="chat-float-icon">🌙</span>
+          <span className="chat-float-text">Habla con Lumi</span>
         </button>
       )}
 
